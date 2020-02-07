@@ -13,10 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Data", "2. Data", "{C2CC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BanklyDemo.Auth", "BanklyDemo.Auth\BanklyDemo.Auth.csproj", "{D33F6E65-E2B6-4D41-BB06-B0ACD5881764}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleClientApi", "SampleClientApi\SampleClientApi.csproj", "{0AB2F9EA-0067-4326-8892-47BBD83D3666}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BanklyDemo.AnotherClient", "BanklyDemo.AnotherClient\BanklyDemo.AnotherClient.csproj", "{CCEBCDCC-733E-48A0-8FF8-A6A02DC03618}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BanklyDemo.Data", "BanklyDemo.Data\BanklyDemo.Data.csproj", "{FABFE364-6546-420B-9B45-96825FEC01AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BanklyDemo.Core", "BanklyDemo.Core\BanklyDemo.Core.csproj", "{1E722E26-8626-4835-A1A2-9066C9E43878}"

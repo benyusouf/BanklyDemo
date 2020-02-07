@@ -6,11 +6,6 @@ namespace BanklyDemo.UIApi.Bootstrap
     {
         public static void AddAuthConfiguration(this IServiceCollection services)
         {
-            //services.AddAuthentication("Bearer").AddJwtBearer("Bearer", config => {
-            //    config.Authority = "https://localhost:44333/";
-            //    config.Audience = "BanklyDemo";
-            //});
-
             services.AddAuthentication(config => {
                 config.DefaultScheme = "Cookie";
                 config.DefaultChallengeScheme = "oidc";
@@ -22,6 +17,11 @@ namespace BanklyDemo.UIApi.Bootstrap
                     config.SaveTokens = true;
                     config.ResponseType = "code";
                 });
+
+            //services.AddAuthentication("Bearer").AddJwtBearer("Bearer", config => {
+            //    config.Authority = "https://localhost:44333/";
+            //    config.Audience = "BanklyDemo";
+            //});
         }
     }
 }
