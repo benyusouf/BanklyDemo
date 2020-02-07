@@ -18,10 +18,7 @@ namespace BanklyDemo.UIApi.Bootstrap
                     config.ResponseType = "code";
                 });
 
-            //services.AddAuthentication("Bearer").AddJwtBearer("Bearer", config => {
-            //    config.Authority = "https://localhost:44333/";
-            //    config.Audience = "BanklyDemo";
-            //});
+
         }
     }
 }
