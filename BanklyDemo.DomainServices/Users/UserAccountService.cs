@@ -61,7 +61,7 @@ namespace BanklyDemo.DomainServices.Users
 
             if (userEntity.IsNull())
             {
-                throw new Exception($"No user With email {email} exists");
+                throw new Exception($"No user with email {email} exists");
             }
 
             var hashedPassword = _cryptoService.Hash(model.Password, userEntity.LoginProfile.Salt, 5323);
