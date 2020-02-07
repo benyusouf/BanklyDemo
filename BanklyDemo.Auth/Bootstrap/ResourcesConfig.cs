@@ -13,33 +13,11 @@ namespace BanklyDemo.Auth.Bootstrap
             };
         public static IEnumerable<ApiResource> GetApis() =>
             new List<ApiResource> { 
-                new ApiResource("BanklyDemo"),
-                new ApiResource("BanklyDemo2")
+                new ApiResource("BanklyDemo")
             };
 
         public static IEnumerable<Client> GetClients() =>
             new List<Client> {
-                new Client
-                {
-                    AllowedScopes = { "BanklyDemo" },
-                    ClientId = "client_id",
-                    ClientSecrets = { new Secret("client_secret".ToSha256())},
-                    AllowedGrantTypes = GrantTypes.ClientCredentials
-                },
-                new Client
-                {
-                    AllowedScopes = { 
-                        "BanklyDemo", 
-                        "BanklyDemo2", 
-                        IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServer4.IdentityServerConstants.StandardScopes.Profile
-                    },
-                    ClientId = "client_id_mvc",
-                    ClientSecrets = { new Secret("client_secret_mvc".ToSha256())},
-                    AllowedGrantTypes = GrantTypes.Code,
-                    RedirectUris = {"https://localhost:44305/signin-oidc"},
-                    RequireConsent = false
-                },
                 new Client {
                     AllowedScopes = {
                         "BanklyDemo",

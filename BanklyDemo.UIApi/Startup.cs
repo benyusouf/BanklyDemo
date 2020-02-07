@@ -20,8 +20,6 @@ namespace BanklyDemo.UIApi
 
         public IConfiguration Configuration { get; }
 
-        const string DefaultCorsPolicy = "Cors-AllowAll";
-
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
 
@@ -35,10 +33,6 @@ namespace BanklyDemo.UIApi
 
 
             services.AddAuthConfiguration();
-            //services.AddAuthentication("Bearer").AddJwtBearer("Bearer", config => {
-            //    config.Authority = "https://localhost:44333/";
-            //    config.Audience = "BanklyDemo";
-            //});
 
             Mapper.Initialize(config => {
                 config.AddProfile<DomainServicesMapperProfile>();
