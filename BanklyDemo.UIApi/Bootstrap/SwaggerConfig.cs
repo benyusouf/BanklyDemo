@@ -20,7 +20,7 @@ namespace BanklyDemo.UIApi.Bootstrap
             {
                 opt.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "BanklyDemo API",
+                    Title = "ABDUL API",
                     Version = "v1",
                     Description = "A complaint service API",
                     Contact = new OpenApiContact
