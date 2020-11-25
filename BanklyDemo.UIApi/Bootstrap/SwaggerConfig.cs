@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BanklyDemo.UIApi.Bootstrap
 {
@@ -27,7 +30,7 @@ namespace BanklyDemo.UIApi.Bootstrap
                     }
                 });
 
-                opt.AddSecurityDefinition("auth2_security",
+                opt.AddSecurityDefinition("oauth2",
                     new OpenApiSecurityScheme
                     {
                         Type = SecuritySchemeType.OAuth2,
@@ -36,7 +39,8 @@ namespace BanklyDemo.UIApi.Bootstrap
                         {
                             Implicit = new OpenApiOAuthFlow
                             {
-                                AuthorizationUrl = new Uri("https://localhost:44333/Account/Login"),
+                                AuthorizationUrl = new Uri("https://localhost:44333/connect/authorize"),
+                                TokenUrl = new Uri("https://localhost:44333/connect/token"),
                                 Scopes = new Dictionary<string, string>
                                 {
                                     { "BanklyDemo", "BanklyDemo Api" }
@@ -44,6 +48,8 @@ namespace BanklyDemo.UIApi.Bootstrap
                             }
                         }
                     });
+
+                opt.OperationFilter<AuthorizeCheckOperationFilter>();
             });
         }
 
@@ -56,11 +62,42 @@ namespace BanklyDemo.UIApi.Bootstrap
             {
                 x.SwaggerEndpoint(SwaggerOpenAPISpecification, SwaggerOpenAPISpecificationDisplayName);
                 x.RoutePrefix = string.Empty;
-                x.OAuthClientId("BanklyDemo_swagger");
+                x.OAuthClientId("BanklyDemo_Swagger");
                 x.OAuthAppName("BanklyDemo - Swagger");
             });
 
             app.UseDeveloperExceptionPage();
+        }
+    }
+
+    public class AuthorizeCheckOperationFilter : IOperationFilter
+    {
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        {
+
+            var oAuthScheme = new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
+            };
+
+            var authAttributes = context.MethodInfo.DeclaringType.GetCustomAttributes(true)
+                                        .Union(context.MethodInfo.GetCustomAttributes(true))
+                                        .OfType<AuthorizeAttribute>();
+
+            if (authAttributes.Any())
+            {
+                operation.Responses.Add("401", new OpenApiResponse { Description = "Unauthorized" });
+                operation.Responses.Add("403", new OpenApiResponse { Description = "Forbidden" });
+
+                operation.Security = new List<OpenApiSecurityRequirement>
+                {
+                    new OpenApiSecurityRequirement
+                    {
+
+                    },
+                };
+
+            }
         }
     }
 }

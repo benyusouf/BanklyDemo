@@ -18,16 +18,13 @@ namespace BanklyDemo.Auth.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(UserLoginModel model)
+        public ActionResult<AuthenticationResponse> Login(UserLoginModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+           
+            var authResponse = _userAccountService.LoginAsync(model);
 
-            var authenticatedUser = _userAccountService.LoginAsync(model);
+            return Ok(authResponse);
 
-            return Redirect(model.ReturnUrl);
         }
 
         [HttpGet]

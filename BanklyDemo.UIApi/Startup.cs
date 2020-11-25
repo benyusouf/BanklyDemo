@@ -27,10 +27,14 @@ namespace BanklyDemo.UIApi
 
             services.AddControllers();
 
-            services.AddCors(); 
+            services.AddCors(o => o.AddPolicy("AllowAll", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-
-
 
             services.AddAuthConfiguration();
 
@@ -60,9 +64,7 @@ namespace BanklyDemo.UIApi
 
             app.UseSwaggerConfiguration();
 
-            app.UseCors(
-                options => options.WithOrigins("https://localhost:44333/").AllowAnyMethod()
-            );
+            app.UseCors("AllowAll");
 
 
             app.UseEndpoints(endpoints =>

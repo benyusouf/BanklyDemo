@@ -8,7 +8,7 @@ namespace BanklyDemo.Core.Users
     {
         Task<User> RegisterAsync(UserRegistrationModel model, bool password = false);
 
-        User LoginAsync(UserLoginModel model);
+        AuthenticationResponse LoginAsync(UserLoginModel model);
 
         Task UpdateProfileAsync(Guid userId, User model);
 

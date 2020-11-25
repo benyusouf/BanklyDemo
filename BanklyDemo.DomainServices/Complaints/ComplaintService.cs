@@ -3,6 +3,7 @@ using BanklyDemo.Core.Complaints;
 using BanklyDemo.Core.Complaints.Models;
 using BanklyDemo.Core.Data;
 using BanklyDemo.Core.Helpers;
+using BanklyDemo.Core.Products;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,13 +13,22 @@ namespace BanklyDemo.DomainServices.Complaints
     public class ComplaintService : IComplaintService
     {
         private readonly IComplaintRepository _complaintRepository;
-        public ComplaintService(IComplaintRepository complaintRepository)
+        private readonly IProductService _productService;
+        public ComplaintService(IComplaintRepository complaintRepository, IProductService productService)
         {
             _complaintRepository = complaintRepository;
+            _productService = productService;
         }
         public async Task<Guid> AddComplaintAsync(ComplaintCreationModel complaint)
         {
             ArgumentGuard.NotNull(complaint, nameof(complaint));
+
+            var prodcut = _productService.GetProductAsync(complaint.ProductId);
+
+            if (prodcut.IsNull())
+            {
+                throw new Exception("Unable to post complain for non-existing product");
+            }
 
             var complaintEntity = Mapper.Map<ComplaintEntity>(complaint);
             complaintEntity.Id = Guid.NewGuid();
@@ -33,6 +43,11 @@ namespace BanklyDemo.DomainServices.Complaints
             ArgumentGuard.NotNull(complaintId, nameof(complaintId));
 
             var complaintEntity = await _complaintRepository.GetAsync(complaintId);
+
+            if (complaintEntity.IsNull())
+            {
+                throw new Exception("Complaint not found");
+            }
 
             await _complaintRepository.DeleteAsync(complaintEntity);
         }
@@ -69,6 +84,11 @@ namespace BanklyDemo.DomainServices.Complaints
 
             var dbComplaint = await _complaintRepository.GetAsync(complaintId);
 
+            if (dbComplaint.IsNull())
+            {
+                throw new Exception("Complaint not found");
+            }
+
             var complaintEntity = Mapper.Map<ComplaintEntity>(complaint);
 
             complaintEntity.Id = complaintId;
@@ -86,6 +106,11 @@ namespace BanklyDemo.DomainServices.Complaints
             ArgumentGuard.NotNull(model.Status, nameof(model.Status));
 
             var complaintEntity = await _complaintRepository.GetAsync(model.ComplaintId);
+
+            if (complaintEntity.IsNull())
+            {
+                throw new Exception("Complaint not found");
+            }
 
             complaintEntity.Status = model.Status;
 

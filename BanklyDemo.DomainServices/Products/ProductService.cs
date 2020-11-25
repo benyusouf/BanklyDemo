@@ -34,6 +34,11 @@ namespace BanklyDemo.DomainServices.Products
 
             var productEntity = await _productRepository.GetAsync(productId);
 
+            if (productEntity.IsNull())
+            {
+                throw new Exception("Product not found");
+            }
+
             await _productRepository.DeleteAsync(productEntity);
         }
 
@@ -68,6 +73,11 @@ namespace BanklyDemo.DomainServices.Products
             ArgumentGuard.NotNull(product, nameof(product));
 
             var dbProduct = await _productRepository.GetAsync(productId);
+
+            if (dbProduct.IsNull())
+            {
+                throw new Exception("Product not found");
+            }
 
             var productEntity = Mapper.Map<ProductEntity>(product);
 

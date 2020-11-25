@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
+using System;
 
 namespace BanklyDemo.UIApi.Bootstrap
 {
@@ -6,17 +8,16 @@ namespace BanklyDemo.UIApi.Bootstrap
     {
         public static void AddAuthConfiguration(this IServiceCollection services)
         {
-            services.AddAuthentication(config => {
-                config.DefaultScheme = "Cookie";
-                config.DefaultChallengeScheme = "oidc";
-            })
-                .AddCookie("Cookie").AddOpenIdConnect("oidc", config => {
-                    config.Authority = "https://localhost:44333/";
-                    config.ClientId = "BanklyDemo_swagger";
-                    config.ClientSecret = "BanklyDemo_Secret";
-                    config.SaveTokens = true;
-                    config.ResponseType = "code";
-                });
+
+            services.AddAuthorization();
+
+            services.AddAuthentication("Bearer").AddIdentityServerAuthentication(options => {
+                options.Authority = "https://localhost:44333/";
+                options.ApiName = "BanklyDemo";
+                options.RequireHttpsMetadata = false;
+                options.EnableCaching = true;
+                options.CacheDuration = TimeSpan.FromMinutes(2);
+            });
 
 
         }

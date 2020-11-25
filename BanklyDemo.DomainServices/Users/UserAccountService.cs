@@ -15,14 +15,16 @@ namespace BanklyDemo.DomainServices.Users
         private IUserRepository _userRepository;
         private IUserService _userService;
         private ICryptoService _cryptoService;
+        private IJwtHandler _jwtHandler;
         public UserAccountService(
             IUserRepository userRepository,
             IUserService userService,
-            ICryptoService cryptoService)
+            ICryptoService cryptoService, IJwtHandler jwtHandler)
         {
             _userRepository = userRepository;
             _userService = userService;
             _cryptoService = cryptoService;
+            _jwtHandler = jwtHandler;
         }
         public Task<Guid> ChangePasswordAsync(string password)
         {
@@ -49,10 +51,10 @@ namespace BanklyDemo.DomainServices.Users
             throw new NotImplementedException();
         }
 
-        public User LoginAsync(UserLoginModel model)
+        public AuthenticationResponse LoginAsync(UserLoginModel model)
         {
             ArgumentGuard.NotNullOrEmpty(model.EmailAddress, nameof(model.EmailAddress));
-            ArgumentGuard.NotNullOrEmpty(model.ReturnUrl, nameof(model.ReturnUrl));
+            // ArgumentGuard.NotNullOrEmpty(model.ReturnUrl, nameof(model.ReturnUrl));
 
             var email = model.EmailAddress.Trim().ToLower();
 
@@ -71,7 +73,15 @@ namespace BanklyDemo.DomainServices.Users
                 throw new Exception("Incorrect Password");
             }
 
-            return Mapper.Map<User>(userEntity);
+            var user =  Mapper.Map<User>(userEntity);
+
+            var token = _jwtHandler.CreateAccessToken(user);
+
+            return new AuthenticationResponse
+            {
+                Token = token,
+                User = user
+            };
         }
 
         public async Task<User> RegisterAsync(UserRegistrationModel model, bool password = false)
