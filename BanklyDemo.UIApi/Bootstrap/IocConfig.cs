@@ -31,6 +31,7 @@ namespace BanklyDemo.UIApi.Bootstrap
         {
             builder.RegisterModule<DataAutofacModule>();
             builder.RegisterModule<DomainServicesAutofacModule>();
+            builder.RegisterType<EmailService>().As<IEmailService>().InstancePerLifetimeScope();
         }
     }
 }

@@ -1,6 +1,7 @@
 using AutoMapper;
 using BanklyDemo.DomainServices.Bootstrap;
 using BanklyDemo.UIApi.Bootstrap;
+using BanklyDemo.UIApi.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,8 @@ namespace BanklyDemo.UIApi
         {
 
             services.AddDbContextConfiguration(Configuration);
+
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
             services.AddControllers();
 
