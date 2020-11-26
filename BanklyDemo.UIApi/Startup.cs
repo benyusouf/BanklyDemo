@@ -27,6 +27,7 @@ namespace BanklyDemo.UIApi
             services.AddDbContextConfiguration(Configuration);
 
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.Configure<TwilloCredentials>(Configuration.GetSection("Twillio"));
 
             services.AddControllers();
 
