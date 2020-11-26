@@ -19,8 +19,8 @@ namespace BanklyDemo.UIApi
         {
             var email = new MimeMessage();
             email.Sender = MailboxAddress.Parse(_mailSettings.Username);
-            email.To.Add(new MailboxAddress(_mailSettings.DisplayName, _mailSettings.Username));
-            email.From.Add(MailboxAddress.Parse(_mailSettings.Username));
+            email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
+            email.From.Add(new MailboxAddress(_mailSettings.DisplayName, _mailSettings.Username));
             email.Subject = mailRequest.Subject;
             var builder = new BodyBuilder();
             builder.HtmlBody = mailRequest.Body;
